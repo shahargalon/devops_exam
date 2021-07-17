@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_instance" "cassandra" {
   ami           = "ami-0b1deee75235aa4bb"
-  instance_type = "t2.small"
+  instance_type = "t2.medium"
   security_groups = ["allow_ssh"]
   count           = 2
   key_name        = "access-key.ec2"
@@ -35,4 +35,14 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+}
+
+output "instance_public_ip_1" {
+
+    value = aws_instance.cassandra[0].public_ip
+}
+
+output "instance_public_ip_2" {
+
+    value = aws_instance.cassandra[1].public_ip
 }

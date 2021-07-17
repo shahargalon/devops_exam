@@ -18,3 +18,20 @@
         apt:
           name: cassandra
           state: present    
+      
+      - name: remove cassandra.yaml file
+        file:
+          state: absent
+          path: /etc/cassandra/cassandra.yaml 
+      
+      - name: copy the cassandra.yaml file
+        copy:
+          src: ./cassandra.yaml
+          dest: /etc/cassandra/cassandra.yaml
+
+      - name: restart cassandra service
+        ansible.builtin.service:
+          name: cassandra
+          state: restarted
+        
+    
