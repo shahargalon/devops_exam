@@ -5,9 +5,9 @@ provider "aws" {
 }
 
 resource "aws_instance" "cassandra" {
-  ami           = "ami-0b1deee75235aa4bb"
-  instance_type = "t2.medium"
-  security_groups = ["allow_ssh"]
+  ami             = "ami-0b1deee75235aa4bb"
+  instance_type   = "t2.medium"
+  security_groups = ["allow_ssh", "allow_cassandra_ports"]
   count           = 2
   key_name        = "access-key.ec2"
   tags = {
@@ -37,18 +37,61 @@ resource "aws_security_group" "allow_ssh" {
   }
 }
 
+resource "aws_security_group" "allow_cassandra_ports" {
+  name        = "allow_cassandra_ports"
+  description = "Allow allow cassandra inbound traffic"
+
+
+  ingress {
+    description = "cassandra traffic"
+    from_port   = 7000
+    to_port     = 7001
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "cassandra traffic"
+    from_port   = 7199
+    to_port     = 7199
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "cassandra traffic"
+    from_port   = 9042
+    to_port     = 9042
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "cassandra traffic"
+    from_port   = 9160
+    to_port     = 9160
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "cassandra traffic"
+    from_port   = 9142
+    to_port     = 9142
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+}
+
 output "instance_public_ip_1" {
 
-    value = aws_instance.cassandra[0].public_ip
-    depends_on = [
+  value = aws_instance.cassandra[0].public_ip
+  depends_on = [
     aws_instance.cassandra
   ]
 }
 
 output "instance_public_ip_2" {
 
-    value = aws_instance.cassandra[1].public_ip
-    depends_on = [
+  value = aws_instance.cassandra[1].public_ip
+  depends_on = [
     aws_instance.cassandra
   ]
 }

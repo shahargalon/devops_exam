@@ -8,6 +8,6 @@
 test.small ansible_host=35.158.97.124
 
 [aws_cassandra_cluster]
-node1 ansible_host=3.124.5.16
-node2 ansible_host=3.126.55.105
+node1 ansible_host=18.195.169.149
+node2 ansible_host=18.192.68.122
 
