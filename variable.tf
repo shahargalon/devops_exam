@@ -1,5 +1,5 @@
 variable "machine_number" {
-  type        = list
-  default     = ["1","2"]
+  type    = list(any)
+  default = ["1", "2"]
 
 }
