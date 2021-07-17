@@ -7,8 +7,6 @@ provider "aws" {
 resource "aws_instance" "cassandra" {
   ami           = "ami-0b1deee75235aa4bb"
   instance_type = "t2.small"
-  # availability_zone = "eu-central-1"
-  #associate_public_ip_address = ??? maybe
   security_groups = ["allow_ssh"]
   count           = 2
   key_name        = "access-key.ec2"
@@ -30,4 +28,11 @@ resource "aws_security_group" "allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
 }
