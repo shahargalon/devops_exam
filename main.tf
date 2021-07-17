@@ -1,11 +1,15 @@
 provider "aws" {
-  region     = "eu-central-1"
-  ***REMOVED***                     # need to change this 
-  ***REMOVED*** # need to change this
+  region  = "eu-central-1"
+  profile = "default"
+
 }
 
+
+locals {
+  ami = "ami-0b1deee75235aa4bb"
+}
 resource "aws_instance" "cassandra" {
-  ami             = "ami-0b1deee75235aa4bb"
+  ami             = local.ami
   instance_type   = "t2.medium"
   security_groups = ["allow_ssh", "allow_cassandra_ports"]
   count           = 2
@@ -80,17 +84,17 @@ resource "aws_security_group" "allow_cassandra_ports" {
 
 }
 
-output "instance_public_ip_1" {
+output "instance_private_ip_1" {
 
-  value = aws_instance.cassandra[0].public_ip
+  value = aws_instance.cassandra[0].private_ip
   depends_on = [
     aws_instance.cassandra
   ]
 }
 
-output "instance_public_ip_2" {
+output "instance_private_ip_2" {
 
-  value = aws_instance.cassandra[1].public_ip
+  value = aws_instance.cassandra[1].private_ip
   depends_on = [
     aws_instance.cassandra
   ]
