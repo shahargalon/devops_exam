@@ -1,0 +1,20 @@
+---
+  - hosts: aws_cassandra_cluster
+    become: yes
+    remote_user: ubuntu
+    tasks:  
+      - name: add cassandra gpg key to apt
+        ansible.builtin.apt_key:
+          url: https://www.apache.org/dist/cassandra/KEYS
+          state: present
+      
+      - name: add cassandra repo tp apt
+        ansible.builtin.apt_repository:
+          repo: deb http://www.apache.org/dist/cassandra/debian 40x main
+          state: present
+          filename: cassandra
+       
+      - name: install cassandra
+        apt:
+          name: cassandra
+          state: present    
