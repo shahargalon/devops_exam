@@ -6,7 +6,7 @@ provider "aws" {
 
 resource "aws_instance" "cassandra" {
   ami           = "ami-0b1deee75235aa4bb"
-  instance_type = "t2.micro"
+  instance_type = "t2.small"
   # availability_zone = "eu-central-1"
   #associate_public_ip_address = ??? maybe
   security_groups = ["allow_ssh"]
