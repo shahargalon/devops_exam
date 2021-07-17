@@ -40,9 +40,15 @@ resource "aws_security_group" "allow_ssh" {
 output "instance_public_ip_1" {
 
     value = aws_instance.cassandra[0].public_ip
+    depends_on = [
+    aws_instance.cassandra
+  ]
 }
 
 output "instance_public_ip_2" {
 
     value = aws_instance.cassandra[1].public_ip
+    depends_on = [
+    aws_instance.cassandra
+  ]
 }
