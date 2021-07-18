@@ -31,9 +31,9 @@
 
       - name: raplace LOCALHOST on cassandra.yaml file
         replace: 
-        path: /etc/cassandra/cassandra.yaml
-        regexp: LOCALHOST
-        replace: "{{ ansible_facts.eth0.ipv4.address }}"
+          path: /etc/cassandra/cassandra.yaml
+          regexp: LOCALHOST
+          replace: "{{ ansible_facts.eth0.ipv4.address }}"
 
       - name: restart cassandra service
         service:

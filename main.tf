@@ -16,6 +16,7 @@ resource "aws_instance" "cassandra" {
   key_name        = "access-key.ec2"
   tags = {
     Name = element(var.machine_number, count.index)
+    type = "cassandra"
   }
 }
 
