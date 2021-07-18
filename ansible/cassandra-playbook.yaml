@@ -1,5 +1,5 @@
 ---
-  - hosts: aws_cassandra_cluster
+  - hosts: aws_tag_type_cassandra 
     become: yes
     remote_user: ubuntu
     tasks:  
