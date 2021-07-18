@@ -7,7 +7,7 @@ dir_path="${dir_path}"
 
 
 
-sleep 15
+#sleep 15
 
 
 terraform_output=$(terraform output --json) 
@@ -18,42 +18,41 @@ public_ip2=$(jq -re ".instance_public_ip_2.value" <<< "${terraform_output}")
 private_ip1=$(jq -re ".instance_private_ip_1.value" <<< "${terraform_output}")
 private_ip2=$(jq -re ".instance_private_ip_2.value" <<< "${terraform_output}")
 
-cat <<EOF | ansible-playbook 
----
-  - hosts: aws_cassandra_cluster
-    become: yes
-    remote_user: ubuntu
-    tasks:  
-      - name: add cassandra gpg key to apt
-        ansible.builtin.apt_key:
-          url: https://www.apache.org/dist/cassandra/KEYS
-          state: present
-      
-      - name: add cassandra repo tp apt
-        ansible.builtin.apt_repository:
-          repo: deb http://www.apache.org/dist/cassandra/debian 40x main
-          state: present
-          filename: cassandra
-       
-      - name: install cassandra
-        apt:
-          name: cassandra
-          state: present    
-      
-      - name: remove cassandra.yaml file
-        file:
-          state: absent
-          path: /etc/cassandra/cassandra.yaml 
-      
-      - name: copy the cassandra.yaml file
-        copy:
-          src: ./cassandra.yaml
-          dest: /etc/cassandra/cassandra.yaml
+cd ansible
+ansible-playbook cassandra-playbook0.yaml
 
-      - name: restart cassandra service
-        ansible.builtin.service:
-          name: cassandra
-          state: restarted
-EOF         
+echo $public_ip1
+echo 'this is ${public_ip1}'
 
+ansible all -b -i '${public_ip1},' -m copy -a "src=./ansible/cassandra1.yaml dest=~/"
+ansible all -b -i '${public_ip2},' -m copy -a "src=./ansible/cassandra2.yaml dest=~/"
+    
+# cat <<'EOF' >> ansible-playbook
+# ---
+#   - hosts: aws_cassandra_cluster
+#     become: yes
+#     remote_user: ubuntu
+#     tasks:
+#       - name: raplace IP1 on cassandra.yaml file
+#         replace: 
+#         path: ~/cassandra.yaml
+#         regexp: PRIVATE_IP1
+#         replace: ${private_ip1}
 
+#       - name: raplace IP2 on cassandra.yaml file
+#         replace: 
+#         path: ~/cassandra.yaml
+#         regexp: PRIVATE_IP2
+#         replace: ${private_ip2}  
+
+#       - name: copy the cassandra.yaml file
+#         copy:
+#         remote_src: yes
+#           src: ~/cassandra.yaml
+#           dest: /etc/cassandra/cassandra.yaml
+
+#       - name: restart cassandra service
+#         service:
+#           name: cassandra
+#           state: restarted
+# EOF
