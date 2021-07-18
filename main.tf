@@ -83,19 +83,3 @@ resource "aws_security_group" "allow_cassandra_ports" {
   }
 
 }
-
-output "instance_private_ip_1" {
-
-  value = aws_instance.cassandra[0].private_ip
-  depends_on = [
-    aws_instance.cassandra
-  ]
-}
-
-output "instance_private_ip_2" {
-
-  value = aws_instance.cassandra[1].private_ip
-  depends_on = [
-    aws_instance.cassandra
-  ]
-}
