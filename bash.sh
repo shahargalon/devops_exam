@@ -13,7 +13,10 @@ sleep 15
 terraform_output=$(terraform output --json) 
 
 
-public_ip1=$(jq -re "instance_public_ip_1.value" <<< "${terraform_output}") 
+public_ip1=$(jq -re ".instance_public_ip_1.value" <<< "${terraform_output}") 
+public_ip2=$(jq -re ".instance_public_ip_2.value" <<< "${terraform_output}")
+private_ip1=$(jq -re ".instance_private_ip_1.value" <<< "${terraform_output}")
+private_ip2=$(jq -re ".instance_private_ip_2.value" <<< "${terraform_output}")
 
 cat <<EOF | ansible-playbook 
 ---
