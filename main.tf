@@ -1,3 +1,14 @@
+terraform {
+  backend "s3" {
+    bucket         = "terraform.backend.shahar"
+    key            = "DEVOPS_EXAM"
+    dynamodb_table = "terraformstate"
+    region         = "eu-central-1"
+  }
+}
+
+
+
 provider "aws" {
   region  = "eu-central-1"
   profile = "default"
@@ -8,6 +19,8 @@ provider "aws" {
 locals {
   ami = "ami-0b1deee75235aa4bb"
 }
+
+
 resource "aws_instance" "cassandra" {
   ami             = local.ami
   instance_type   = "t2.medium"
