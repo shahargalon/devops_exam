@@ -4,7 +4,7 @@ cluster_name: 'Test Cluster'
 seed_provider:
     - class_name: org.apache.cassandra.locator.SimpleSeedProvider
       parameters:
-          - seeds: "172.31.47.27, 172.31.32.156"
+          - seeds: " ListOfIP " 
 endpoint_snitch: SimpleSnitch
 rpc_address: LOCALHOST
 listen_address: LOCALHOST

@@ -27,7 +27,14 @@
       - name: copy cassandra.yaml
         copy: 
           src: ./cassandra.yaml
-          dest: /etc/cassandra/cassandra.yaml  
+          dest: /etc/cassandra/cassandra.yaml
+      
+      - name: raplace ListOfIP on cassandra.yaml file
+        replace: 
+          path: /etc/cassandra/cassandra.yaml
+          regexp: ListOfIP
+          replace: "{{ hostvars[groups['aws_tag_type_cassandra'][0]]['ansible_eth0']['ipv4']['address'] }} ,{{ hostvars[groups['aws_tag_type_cassandra'][1]]['ansible_eth0']['ipv4']['address'] }} "    
+          
 
       - name: raplace LOCALHOST on cassandra.yaml file
         replace: 
